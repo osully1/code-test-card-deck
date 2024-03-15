@@ -177,5 +177,39 @@ class CardDeck {
 // Create a new card deck.
 const deck = new CardDeck(".deck", ".hand");
 
+const params = (new URLSearchParams(window.location.search))
+
+if (params.size > 0) {
+	if (params.has("cards")) {
+		const cardsParam = params.get("cards")
+		const cardsRequested = cardsParam.split(" ")
+		cardsRequested.forEach(cardId => deck.draw(cardId))
+	}
+
+	if (params.has("suits")) {
+		const suitsParam = params.get("suits")
+		const suitsRequested = suitsParam.split(" ")
+		deck.filter("suit", suitsRequested)
+	}
+
+	if (params.has("ranks")) {
+		const ranksParam = params.get("ranks")
+		const ranksRequested = ranksParam.split(" ").map(rank => Number(rank))
+		deck.filter("rank", ranksRequested)
+	}
+
+	if (params.has("limit")) {
+		const limitParam = params.get("limit")
+		const limitRequested = Number(limitParam)
+		deck.limit(limitRequested)
+	}
+
+	if (params.has("sorted")) {
+		deck.sort()
+	}
+
+	deck.drawFiltered()
+}
+
 // Take a look at the deck object and its methods.
 console.log(deck);
